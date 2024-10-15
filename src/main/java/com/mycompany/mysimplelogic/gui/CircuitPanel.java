@@ -1,17 +1,36 @@
 
 package com.mycompany.mysimplelogic.gui;
 
+import java.awt.*;
 /**
  *
  * @author Antoni Jan Nowaczyk
  */
 public class CircuitPanel extends javax.swing.JPanel {
-
+    
+    private final int WIDTH = 200;
+    private final int HEIGHT = 200;
+    
+    private int gridsize = 20;
+    
     /**
      * Creates new form circuitPanel
      */
     public CircuitPanel() {
+        this.setSize(WIDTH, HEIGHT);
         initComponents();
+    }
+    
+    @Override
+    public void paintComponent(Graphics g) {
+        int nrOfCells = WIDTH / gridsize;
+
+        g.setColor(Color.GRAY);
+        for (int i = 0; i < nrOfCells; i++) {
+            for (int j = 0; j < nrOfCells; j++) {
+                g.drawRect(i * gridsize, j * gridsize, gridsize, gridsize);
+            }
+        }
     }
 
     /**
@@ -23,30 +42,19 @@ public class CircuitPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
-        jLabel1.setText("jLabel1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(173, 173, 173)
-                .addComponent(jLabel1)
-                .addContainerGap(189, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(126, 126, 126)
-                .addComponent(jLabel1)
-                .addContainerGap(158, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

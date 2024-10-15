@@ -6,7 +6,7 @@ package com.mycompany.mysimplelogic.gui;
  * @author Antoni Jan Nowaczyk
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form MainFrame
      */
@@ -16,9 +16,24 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void initFrame() {
-        
+        runGameLoop();
+    }
+    
+    private void updateFrame() {
+        repaint();
     }
 
+    private void runGameLoop() {
+        Thread gameLoop = new Thread(() -> {
+            while (true) {
+                this.repaint();
+                try {
+                    Thread.sleep(15);
+                } catch (InterruptedException ex) {
+                }
+            }
+        });
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
