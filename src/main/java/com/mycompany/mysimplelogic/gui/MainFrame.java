@@ -6,34 +6,17 @@ package com.mycompany.mysimplelogic.gui;
  * @author Antoni Jan Nowaczyk
  */
 public class MainFrame extends javax.swing.JFrame {
-    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        initFrame();
-    }
-    
-    private void initFrame() {
-        runGameLoop();
     }
     
     private void updateFrame() {
         repaint();
     }
-
-    private void runGameLoop() {
-        Thread gameLoop = new Thread(() -> {
-            while (true) {
-                this.repaint();
-                try {
-                    Thread.sleep(15);
-                } catch (InterruptedException ex) {
-                }
-            }
-        });
-    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,8 +27,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         circuitPanel1 = new com.mycompany.mysimplelogic.gui.CircuitPanel();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        jMenu2.setText("File");
+        jMenuBar2.add(jMenu2);
+
+        jMenu3.setText("Edit");
+        jMenuBar2.add(jMenu3);
+
+        setJMenuBar(jMenuBar2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -59,12 +58,24 @@ public class MainFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(circuitPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(circuitPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        switch(evt.getKeyCode()) {
+            case (java.awt.event.KeyEvent.VK_W) -> this.circuitPanel1.moveHighlight(0, -1);
+            case (java.awt.event.KeyEvent.VK_A) -> this.circuitPanel1.moveHighlight(-1, 0);
+            case (java.awt.event.KeyEvent.VK_S) -> this.circuitPanel1.moveHighlight(0, 1);
+            case (java.awt.event.KeyEvent.VK_D) -> this.circuitPanel1.moveHighlight(1, 0);
+            default -> {}
+        }
+        updateFrame();
+    }//GEN-LAST:event_formKeyPressed
 
     /**
      * @param args the command line arguments
@@ -103,5 +114,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.mysimplelogic.gui.CircuitPanel circuitPanel1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenuBar jMenuBar2;
     // End of variables declaration//GEN-END:variables
 }

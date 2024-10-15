@@ -8,11 +8,15 @@ import java.awt.*;
  */
 public class CircuitPanel extends javax.swing.JPanel {
     
-    private final int WIDTH = 200;
-    private final int HEIGHT = 200;
+    private final int WIDTH = 400;
+    private final int HEIGHT = 300;
     
-    private int gridsize = 20;
+    private int gridsize = 25;
+    private int offsetX = 0;
+    private int offsetY = 0;
     
+    private int highlightX = WIDTH / 2;
+    private int highlightY = HEIGHT / 2;
     /**
      * Creates new form circuitPanel
      */
@@ -23,16 +27,23 @@ public class CircuitPanel extends javax.swing.JPanel {
     
     @Override
     public void paintComponent(Graphics g) {
-        int nrOfCells = WIDTH / gridsize;
+        int nrOfRows = WIDTH / gridsize;
+        int nrOfCols = HEIGHT / gridsize;
 
         g.setColor(Color.GRAY);
-        for (int i = 0; i < nrOfCells; i++) {
-            for (int j = 0; j < nrOfCells; j++) {
-                g.drawRect(i * gridsize, j * gridsize, gridsize, gridsize);
+        for (int i = -1; i < nrOfRows + 1; i++) {
+            for (int j = -1; j < nrOfCols + 1; j++) {
+                g.drawRect(i * gridsize + offsetX, j * gridsize + offsetY, gridsize, gridsize);
             }
         }
+        g.setColor(Color.RED);
+        g.fillOval(highlightX - 5, highlightY - 5, 10, 10);
     }
-
+    
+    public void moveHighlight(int x, int y) {
+        highlightX += (x * gridsize);
+        highlightY += (y * gridsize);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
