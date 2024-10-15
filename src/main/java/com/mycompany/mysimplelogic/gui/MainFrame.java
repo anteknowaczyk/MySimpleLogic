@@ -29,7 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
         circuitPanel1 = new com.mycompany.mysimplelogic.gui.CircuitPanel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -38,11 +38,18 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jMenu2.setText("File");
-        jMenuBar2.add(jMenu2);
+        jMenu2.setText("Gates");
 
-        jMenu3.setText("Edit");
-        jMenuBar2.add(jMenu3);
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, 0));
+        jMenuItem1.setText("AND");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar2.add(jMenu2);
 
         setJMenuBar(jMenuBar2);
 
@@ -76,6 +83,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
         updateFrame();
     }//GEN-LAST:event_formKeyPressed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        System.out.println("AND");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mycompany.mysimplelogic.gui.CircuitPanel circuitPanel1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
