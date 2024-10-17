@@ -4,6 +4,7 @@ package com.mycompany.mysimplelogic.gui;
 import com.mycompany.mysimplelogic.circuitElements.AbstractGate;
 import com.mycompany.mysimplelogic.circuitElements.AndGate;
 import com.mycompany.mysimplelogic.circuitElements.Location;
+import com.mycompany.mysimplelogic.circuitElements.Wire;
 import java.awt.*;
 import java.util.ArrayList;
 /**
@@ -28,7 +29,8 @@ public class CircuitPanel extends javax.swing.JPanel {
     private ArrayList<AbstractGate> gates;
     private ArrayList<ArrayList<Location>> grid;
     private ArrayList<Location> powered;
-    
+    private ArrayList<Wire> wires;
+    private Wire currentlyBuilt;
     /**
      * Creates new form circuitPanel
      */
@@ -36,6 +38,7 @@ public class CircuitPanel extends javax.swing.JPanel {
         grid = new ArrayList<>();
         gates = new ArrayList<>();
         powered = new ArrayList<>();
+        wires = new ArrayList<>();
         
         for (int i = 0; i < nrOfRows; i++) {
             ArrayList<Location> row = new ArrayList<>();
@@ -64,9 +67,36 @@ public class CircuitPanel extends javax.swing.JPanel {
             g.fillRect(gate.getLocation().get_row() * gridsize, gate.getLocation().get_col() * gridsize, gridsize, 2 * gridsize);
             g.fillOval(gate.getLocation().get_row() * gridsize - 5, (gate.getLocation().get_col() + 1) * gridsize - 5, 10, 10);
         }
+        //Paint wires
+        for (Wire w : wires) {
+        if (w.powered()) {
+            g.setColor(Color.PINK);
+        } else {
+            g.setColor(Color.BLACK);
+        }
+            for (int i = 1; i < w.span().size(); i++) {
+                Location first = w.span().get(i - 1);
+                Location second = w.span().get(i);
+                //Right to left
+                if (first.get_row() > second.get_row()) {
+                    Location temp = first;
+                    first = second;
+                    second = temp;
+                }
+                //Bottom up
+                if (w.span().get(i - 1).get_col() > w.span().get(i).get_col()) {
+                    Location temp = first;
+                    first = second;
+                    second = temp;
+                }
+                g.fillRect(first.get_row() * gridsize - 1, first.get_col() * gridsize - 1,
+                        (second.get_row() - first.get_row()) * gridsize + 2,
+                        (second.get_col() - first.get_col()) * gridsize + 2);
+            }
+        }
         //Paint powered cells.
         for (Location loc : powered) {
-            g.setColor(Color.YELLOW);
+            g.setColor(Color.PINK);
             g.fillOval(loc.get_row() * gridsize - 5, loc.get_col() * gridsize - 5, 10, 10);
         }
         //Paint highlight.
@@ -77,6 +107,9 @@ public class CircuitPanel extends javax.swing.JPanel {
     public void moveHighlight(int x, int y) {
         highlightX += x;
         highlightY += y;
+        if (currentlyBuilt != null) {
+            currentlyBuilt.add(grid.get(highlightX).get(highlightY));
+        }
     }
     
     public void addGate(String type) {
@@ -103,6 +136,25 @@ public class CircuitPanel extends javax.swing.JPanel {
                 powered.add(gate.Output());
             }
         }
+        for (Wire w : wires) {
+            w.eval();
+            if (w.powered()) {
+                powered.add(w.span().get(w.span().size() - 1));
+            }
+        }
+    }
+    
+    public void startWire() {
+        Location start = grid.get(highlightX).get(highlightY);
+        Wire newWire = new Wire();
+        newWire.add(start);
+        
+        wires.add(newWire);
+        currentlyBuilt = newWire;
+    }
+    
+    public void stopWire() {
+        currentlyBuilt = null;
     }
     /**
      * This method is called from within the constructor to initialize the form.
