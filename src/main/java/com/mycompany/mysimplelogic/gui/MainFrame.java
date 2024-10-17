@@ -15,6 +15,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void updateFrame() {
         repaint();
+        this.circuitPanel1.rebool();
     }
  
     /**
@@ -79,13 +80,15 @@ public class MainFrame extends javax.swing.JFrame {
             case (java.awt.event.KeyEvent.VK_A) -> this.circuitPanel1.moveHighlight(-1, 0);
             case (java.awt.event.KeyEvent.VK_S) -> this.circuitPanel1.moveHighlight(0, 1);
             case (java.awt.event.KeyEvent.VK_D) -> this.circuitPanel1.moveHighlight(1, 0);
+            case (java.awt.event.KeyEvent.VK_SPACE) -> this.circuitPanel1.powerUp();
             default -> {}
         }
         updateFrame();
     }//GEN-LAST:event_formKeyPressed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        System.out.println("AND");
+        this.circuitPanel1.addGate("AND");
+        updateFrame();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**

@@ -1,7 +1,9 @@
 com\mycompany\mysimplelogic\circuitElements\AbstractGate.class
 com\mycompany\mysimplelogic\gui\MainFrame$1.class
 com\mycompany\mysimplelogic\gui\MainFrame.class
+com\mycompany\mysimplelogic\circuitElements\AndGate.class
 com\mycompany\mysimplelogic\gui\MainFrame$2.class
 com\mycompany\mysimplelogic\dummy.class
+com\mycompany\mysimplelogic\circuitElements\Location.class
 com\mycompany\mysimplelogic\gui\CircuitPanel.class
 com\mycompany\mysimplelogic\gui\MainFrame$3.class

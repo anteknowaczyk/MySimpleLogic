@@ -1,7 +1,11 @@
 
 package com.mycompany.mysimplelogic.gui;
 
+import com.mycompany.mysimplelogic.circuitElements.AbstractGate;
+import com.mycompany.mysimplelogic.circuitElements.AndGate;
+import com.mycompany.mysimplelogic.circuitElements.Location;
 import java.awt.*;
+import java.util.ArrayList;
 /**
  *
  * @author Antoni Jan Nowaczyk
@@ -15,34 +19,90 @@ public class CircuitPanel extends javax.swing.JPanel {
     private int offsetX = 0;
     private int offsetY = 0;
     
-    private int highlightX = WIDTH / 2;
-    private int highlightY = HEIGHT / 2;
+    private int nrOfRows = WIDTH / gridsize;
+    private int nrOfCols = HEIGHT / gridsize;
+    
+    private int highlightX = nrOfRows / 2;
+    private int highlightY = nrOfCols / 2;
+    
+    private ArrayList<AbstractGate> gates;
+    private ArrayList<ArrayList<Location>> grid;
+    private ArrayList<Location> powered;
+    
     /**
      * Creates new form circuitPanel
      */
     public CircuitPanel() {
+        grid = new ArrayList<>();
+        gates = new ArrayList<>();
+        powered = new ArrayList<>();
+        
+        for (int i = 0; i < nrOfRows; i++) {
+            ArrayList<Location> row = new ArrayList<>();
+            for (int j = 0; j < nrOfCols; j++) {
+                row.add(new Location(i, j));
+            }
+            grid.add(row);
+        }
+        
         this.setSize(WIDTH, HEIGHT);
         initComponents();
     }
     
     @Override
     public void paintComponent(Graphics g) {
-        int nrOfRows = WIDTH / gridsize;
-        int nrOfCols = HEIGHT / gridsize;
-
+        //Paint grid.
         g.setColor(Color.GRAY);
-        for (int i = -1; i < nrOfRows + 1; i++) {
-            for (int j = -1; j < nrOfCols + 1; j++) {
-                g.drawRect(i * gridsize + offsetX, j * gridsize + offsetY, gridsize, gridsize);
+        for (ArrayList<Location> row : grid) {
+            for (Location loc : row) {
+                g.drawRect(loc.get_row() * gridsize, loc.get_col() * gridsize, gridsize, gridsize);
             }
         }
+        //Paint gates.
+        g.setColor(Color.BLUE);
+        for (AbstractGate gate : gates) {
+            g.fillRect(gate.getLocation().get_row() * gridsize, gate.getLocation().get_col() * gridsize, gridsize, 2 * gridsize);
+            g.fillOval(gate.getLocation().get_row() * gridsize - 5, (gate.getLocation().get_col() + 1) * gridsize - 5, 10, 10);
+        }
+        //Paint powered cells.
+        for (Location loc : powered) {
+            g.setColor(Color.YELLOW);
+            g.fillOval(loc.get_row() * gridsize - 5, loc.get_col() * gridsize - 5, 10, 10);
+        }
+        //Paint highlight.
         g.setColor(Color.RED);
-        g.fillOval(highlightX - 5, highlightY - 5, 10, 10);
+        g.fillOval(highlightX * gridsize - 5, highlightY * gridsize - 5, 10, 10);
     }
     
     public void moveHighlight(int x, int y) {
-        highlightX += (x * gridsize);
-        highlightY += (y * gridsize);
+        highlightX += x;
+        highlightY += y;
+    }
+    
+    public void addGate(String type) {
+        AbstractGate newGate;
+        Location st = grid.get(highlightX).get(highlightY);
+        Location nd =  grid.get(highlightX).get(highlightY + 2);
+        Location out = grid.get(highlightX + 1).get(highlightY + 1);
+        switch (type) {
+            case "AND" -> newGate = new AndGate(st, nd, out);
+            default -> { newGate = null; }
+        }
+        gates.add(newGate);
+    }
+    
+    public void powerUp() {
+        grid.get(highlightX).get(highlightY).set();
+        powered.add(grid.get(highlightX).get(highlightY));
+    }
+    
+    public void rebool() {
+        for (AbstractGate gate : gates) {
+            gate.eval();
+            if (gate.Output().get()){
+                powered.add(gate.Output());
+            }
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
