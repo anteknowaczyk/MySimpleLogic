@@ -4,6 +4,7 @@ package com.mycompany.mysimplelogic.gui;
 import com.mycompany.mysimplelogic.circuitElements.AbstractGate;
 import com.mycompany.mysimplelogic.circuitElements.AndGate;
 import com.mycompany.mysimplelogic.circuitElements.Location;
+import com.mycompany.mysimplelogic.circuitElements.OrGate;
 import com.mycompany.mysimplelogic.circuitElements.Wire;
 import java.awt.*;
 import java.util.ArrayList;
@@ -62,8 +63,14 @@ public class CircuitPanel extends javax.swing.JPanel {
             }
         }
         //Paint gates.
-        g.setColor(Color.BLUE);
         for (AbstractGate gate : gates) {
+            if (gate.toString() == "AND") {
+                g.setColor(Color.BLUE);
+            } else if (gate.toString() == "OR") {
+                g.setColor(Color.GREEN);
+            } else {
+                g.setColor(Color.GRAY);
+            }
             g.fillRect(gate.getLocation().get_row() * gridsize, gate.getLocation().get_col() * gridsize, gridsize, 2 * gridsize);
             g.fillOval(gate.getLocation().get_row() * gridsize - 5, (gate.getLocation().get_col() + 1) * gridsize - 5, 10, 10);
         }
@@ -119,6 +126,7 @@ public class CircuitPanel extends javax.swing.JPanel {
         Location out = grid.get(highlightX + 1).get(highlightY + 1);
         switch (type) {
             case "AND" -> newGate = new AndGate(st, nd, out);
+            case "OR" -> newGate = new OrGate(st, nd, out);
             default -> { newGate = null; }
         }
         gates.add(newGate);
