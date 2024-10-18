@@ -25,6 +25,10 @@ public class Wire {
             span.get(span.size() - 1).set();
             power = true;
         }
+        if (span.get(span.size() - 1).get()) {
+            span.get(0).set();
+            power = true;
+        }
     }
     
     public ArrayList<Location> span() {

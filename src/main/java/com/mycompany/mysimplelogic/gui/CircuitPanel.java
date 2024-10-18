@@ -137,9 +137,17 @@ public class CircuitPanel extends javax.swing.JPanel {
             }
         }
         for (Wire w : wires) {
+            if (w == currentlyBuilt) {
+                continue;
+            }
             w.eval();
             if (w.powered()) {
-                powered.add(w.span().get(w.span().size() - 1));
+                if (!powered.contains(w.span().get(0))) {
+                    powered.add(w.span().get(0));
+                }
+                if (!powered.contains(w.span().get(w.span().size() - 1))) {
+                    powered.add(w.span().get(w.span().size() - 1));
+                }
             }
         }
     }
